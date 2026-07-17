@@ -223,10 +223,7 @@ Contributions are welcome! Please open an issue to discuss any major changes bef
 3. Commit your changes
 4. Push to the branch and open a Pull Request
 
-## 📄 License
-
-[Add your license here, e.g. MIT]
 
 ---
 
-Built with ❤️ using TanStack Start and Supabase.
+Built with  using TanStack Start and Supabase.
