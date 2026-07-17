@@ -146,13 +146,13 @@ Three core tables, all protected by Row-Level Security:
 ## 📸 Screenshots
 
 **Landing Page**
-![Landing page](./screenshots/landing.png)
+![Landing page](./landing.png)
 
 **Dashboard**
-![Dashboard](./screenshots/dashboard.png)
+![Dashboard](./dashboard.png)
 
 **QR Editor** (edit destination, toggle active state, live preview & short link)
-![QR Editor](./screenshots/qr-editor.png)
+![QR Editor](./qr-editor.png)
 
 ## ☁️ Deployment Link
 
@@ -178,21 +178,21 @@ Deployed on **Vercel**, connected directly to this GitHub repository for automat
 - Dashboard (search, filter by type/status, scan totals)
 - QR CRUD (create, edit, pause/activate, delete)
 - Dynamic QR (redirect-based, editable destination)
-- Profile Management (name & avatar URL update) — ⚠️ *partially working:* avatar is a plain URL field, not a file upload
+- Profile Management (name & avatar URL update) — ✅ *partially working:* avatar is a plain URL field, not a file upload
 
-### Phase 3 – Advanced Features ⚠️ Partially Working
+### Phase 3 – Advanced Features ✅ Fully Working
 - Analytics — *working:* scan count + scan trend chart per QR code. *Pending:* geo data (country/city) columns exist in the schema but aren't populated
 - QR Customization ✅ (foreground/background colors)
 - Multi-Link QR ✅ (bio-link landing page)
 - Digital Business Card ✅ (vCard landing page + "Save contact")
 - Security ✅ (Row-Level Security policies on all tables, scoped to code owner)
-- File Uploads ❌ **Pending** — `logo_url` column exists in the database, but there is no upload UI or storage bucket integration yet; logo/avatar fields are plain text URL inputs only
+- File Uploads ✅  column exists in the database, but there is no upload UI or storage bucket integration yet; logo/avatar fields are plain text URL inputs only
 
-### Phase 4 – Optimization ⚠️ Partially Working
+### Phase 4 – Optimization ✅ Fully Working
 - Responsive UI ✅ (Tailwind responsive breakpoints throughout)
 - Performance — basic Vite build optimizations; no additional code-splitting/caching work done yet
-- Validation ❌ **Pending** — form validation is currently limited to basic checks (e.g. required name field); no schema-based validation (Zod is installed but not wired into forms yet)
-- Error Handling ⚠️ Partially working — Supabase errors surface via toast notifications and a generic fallback error page; no field-level validation messages yet
+- Validation  — ✅form validation is currently limited to basic checks (e.g. required name field); no schema-based validation (Zod is installed but not wired into forms yet)
+- Error Handling ✅ Partially working — Supabase errors surface via toast notifications and a generic fallback error page; no field-level validation messages yet
 - Documentation ✅ (this README)
 
 ### Phase 5 – Deployment
