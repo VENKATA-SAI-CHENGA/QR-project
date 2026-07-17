@@ -22,12 +22,21 @@ function Dashboard() {
   const { data: qrs = [], isLoading } = useQuery({
     queryKey: ["qr_codes"],
     queryFn: async () => {
-      const { data, error } = await supabase
-        .from("qr_codes")
-        .select("*")
-        .order("created_at", { ascending: false });
-      if (error) throw error;
-      return data;
+      const {
+  data: { user },
+} = await supabase.auth.getUser();
+
+if (!user) throw new Error("Not authenticated");
+
+const { data, error } = await supabase
+  .from("qr_codes")
+  .select("*")
+  .eq("user_id", user.id)
+  .order("created_at", { ascending: false });
+
+if (error) throw error;
+
+return data;
     },
   });
 

@@ -28,28 +28,48 @@ function AuthPage() {
   const [busy, setBusy] = useState(false);
 
   useEffect(() => {
-    supabase.auth.getSession().then(({ data }) => {
-      if (data.session) navigate({ to: "/dashboard" });
-    });
-  }, [navigate]);
+  const checkUser = async () => {
+    const {
+      data: { session },
+    } = await supabase.auth.getSession();
 
+    if (session?.user) {
+      navigate({ to: "/dashboard", replace: true });
+    }
+  };
+
+  checkUser();
+}, [navigate]);
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setBusy(true);
     try {
       if (mode === "signup") {
-        const { error } = await supabase.auth.signUp({
-          email,
-          password,
-          options: {
-            emailRedirectTo: `${window.location.origin}/dashboard`,
-            data: { full_name: name },
-          },
-        });
-        if (error) throw error;
-        toast.success("Account created — check your email if confirmation is required.");
-        navigate({ to: "/dashboard" });
-      } else {
+  const { error } = await supabase.auth.signUp({
+    email,
+    password,
+    options: {
+      emailRedirectTo: window.location.origin,
+      data: {
+        full_name: name,
+      },
+    },
+  });
+
+  if (error) throw error;
+
+  await supabase.auth.signOut();
+
+  toast.success("Account created successfully. Please sign in.");
+
+  setEmail("");
+  setPassword("");
+  setName("");
+
+  setMode("signin");
+  return;
+}
+       else {
         const { error } = await supabase.auth.signInWithPassword({ email, password });
         if (error) throw error;
         navigate({ to: "/dashboard" });
@@ -74,7 +94,23 @@ function AuthPage() {
     if (result.redirected) return;
     navigate({ to: "/dashboard" });
   }
+async function handleForgotPassword() {
+  if (!email.trim()) {
+    toast.error("Please enter your email address first.");
+    return;
+  }
 
+  const { error } = await supabase.auth.resetPasswordForEmail(email, {
+    redirectTo: `${window.location.origin}/reset-password`,
+  });
+
+  if (error) {
+    toast.error(error.message);
+    return;
+  }
+
+  toast.success("Password reset link sent! Check your email.");
+}
   return (
     <div className="min-h-screen flex items-center justify-center p-4">
       <div className="w-full max-w-md">
@@ -112,10 +148,34 @@ function AuthPage() {
               <Input id="email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
             </div>
             <div>
-              <Label htmlFor="password">Password</Label>
-              <Input id="password" type="password" minLength={6} value={password} onChange={(e) => setPassword(e.target.value)} required />
-            </div>
-            <Button type="submit" className="w-full btn-neon btn-neon-hover" disabled={busy}>
+  <Label htmlFor="password">Password</Label>
+  <Input
+    id="password"
+    type="password"
+    minLength={6}
+    value={password}
+    onChange={(e) => setPassword(e.target.value)}
+    required
+  />
+</div>
+
+{mode === "signin" && (
+  <div className="flex justify-end">
+    <button
+      type="button"
+      onClick={handleForgotPassword}
+      className="text-sm text-primary hover:underline"
+    >
+      Forgot Password?
+    </button>
+  </div>
+)}
+
+<Button
+  type="submit"
+  className="w-full btn-neon btn-neon-hover"
+  disabled={busy}
+>
               {busy ? <Loader2 className="w-4 h-4 animate-spin" /> : mode === "signin" ? "Sign in" : "Create account"}
             </Button>
           </form>
