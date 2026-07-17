@@ -126,9 +126,7 @@ async function handleForgotPassword() {
             {mode === "signin" ? "Sign in to manage your QR codes" : "Start building dynamic QR codes in seconds"}
           </p>
 
-          <Button type="button" variant="outline" className="w-full mb-4" onClick={handleGoogle} disabled={busy}>
-            <GoogleIcon /> Continue with Google
-          </Button>
+
 
           <div className="flex items-center gap-3 my-4">
             <div className="h-px flex-1 bg-border" />
